@@ -22,7 +22,7 @@ namespace UniCorn.Logic
             m_playerEntity = playerEntity;
         }
 
-        public Vector2f GetPlayerEntityPosition()
+        public Vector2i GetPlayerEntityPosition()
         {
             return m_playerEntity.Position;
         }
@@ -30,6 +30,11 @@ namespace UniCorn.Logic
         public void MovePlayerEntity(Keyboard.Key keyDir)
         {
             m_gameFieldMover.MovePlayerEntity(keyDir);
+        }
+
+        public Keyboard.Key GetLastDir()
+        {
+            return m_gameFieldMover.LastDir;
         }
     }
 }

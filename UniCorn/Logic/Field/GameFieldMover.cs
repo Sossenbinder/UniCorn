@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using UniCorn.Logic.Player;
 
@@ -15,6 +16,9 @@ namespace UniCorn.Logic.Field
 
         private readonly int m_movableGameFieldSize;
         private readonly int m_spriteSize;
+        private readonly int m_centerSpritePointFactor;
+
+        public Keyboard.Key LastDir { get; set; }
 
         public GameFieldMover(GameField gameField, PlayerEntity playerEntity)
         {
@@ -23,6 +27,7 @@ namespace UniCorn.Logic.Field
 
             m_movableGameFieldSize = gameField.MovableGameFieldSize;
             m_spriteSize = gameField.SpriteSize;
+            m_centerSpritePointFactor = m_spriteSize / 2;
         }
 
         /// <summary>
@@ -37,6 +42,8 @@ namespace UniCorn.Logic.Field
             if (CheckMoveValidity(m_playerEntity.Position, newPos))
             {
                 m_playerEntity.Move(newPos);
+
+                LastDir = keyDir;
             }
         }
 
@@ -48,10 +55,12 @@ namespace UniCorn.Logic.Field
         /// <returns></returns>
         public bool CheckMoveValidity(Vector2i oldPos, Vector2i newPos)
         {
+            CenterPositionsRelativeToSprite(ref oldPos, ref newPos);
+
             var oldTiledPos = CalculateTiledPosition(oldPos);
             var newTiledPos = CalculateTiledPosition(newPos);
 
-            if (newTiledPos.X < 0 || newTiledPos.X > m_movableGameFieldSize - 1 || newTiledPos.Y < 0 || newTiledPos.Y > m_movableGameFieldSize - 1)
+            if (newTiledPos.X < 0 || newTiledPos.X > m_movableGameFieldSize || newTiledPos.Y < 0 || newTiledPos.Y > m_movableGameFieldSize )
             {
                 return false;
             }
@@ -62,6 +71,19 @@ namespace UniCorn.Logic.Field
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// We need to center both positions relative to the sprite size to not have a "top-left" collision
+        /// </summary>
+        /// <param name="oldPos">Old position</param>
+        /// <param name="newPos">New position</param>
+        public void CenterPositionsRelativeToSprite(ref Vector2i oldPos, ref Vector2i newPos)
+        {
+            oldPos.X += m_centerSpritePointFactor;
+            oldPos.Y += m_centerSpritePointFactor;
+            newPos.X += m_centerSpritePointFactor;
+            newPos.Y += m_centerSpritePointFactor;
         }
 
         /// <summary>

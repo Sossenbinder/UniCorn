@@ -12,9 +12,12 @@ namespace UniCorn.Logic.Player
     {
         public Vector2i Position { get; set; }
 
-        public PlayerEntity(int gameFieldSize)
+        private int m_playerEntitySpeed;
+
+        public PlayerEntity(int gameFieldSize, int playerEntitiySpeed = 5)
         {
             Position = new Vector2i(64, 64);
+            m_playerEntitySpeed = playerEntitiySpeed;
         }
 
         public Vector2i CalculateNewPosition(Keyboard.Key keyDir)
@@ -25,16 +28,16 @@ namespace UniCorn.Logic.Player
             switch (keyDir)
             {
                 case Keyboard.Key.Up:
-                    newYPos -= 3;
+                    newYPos -= m_playerEntitySpeed;
                     break;
                 case Keyboard.Key.Down:
-                    newYPos += 3;
+                    newYPos += m_playerEntitySpeed;
                     break;
                 case Keyboard.Key.Left:
-                    newXPos -= 3;
+                    newXPos -= m_playerEntitySpeed;
                     break;
                 case Keyboard.Key.Right:
-                    newXPos += 3;
+                    newXPos += m_playerEntitySpeed;
                     break;
             }
 

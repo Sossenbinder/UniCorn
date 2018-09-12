@@ -62,11 +62,22 @@ namespace UniCorn.Logic.Field
         {
             var borderIndex = m_gameFieldSize - 1;
 
-            for(var i = 1; i < borderIndex; ++i)
+            for(var y = 1; y < borderIndex; ++y)
             {
-                for(var j = 1; j < borderIndex; ++j)
+                for(var x = 1; x < borderIndex; ++x)
                 {
-                    m_gameField[i, j] = new GameFieldTile(GameFieldTileType.Grass);
+                    GameFieldTile tile;
+
+                    if(y % 2 == 0 && x % 2 == 0)
+                    {
+                        tile = new GameFieldTile(GameFieldTileType.BlockMiddle);
+                    }
+                    else
+                    {
+                        tile = new GameFieldTile(GameFieldTileType.Grass);
+                    }
+
+                    m_gameField[x, y] = tile;
                 }
             }
         }

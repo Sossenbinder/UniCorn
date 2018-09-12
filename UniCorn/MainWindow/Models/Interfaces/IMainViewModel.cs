@@ -13,11 +13,19 @@ namespace MainWindow.UniCorn.Models.Interfaces
     public interface IMainViewModel
     {
         void InitializeGameField();
+
         WindowMetadata GetWindowMetaData();
+
         int GetGameFieldSize();
+
         int GetSprizeSize();
-        GameFieldTileType GetGameFieldTile(int posX, int posY);
+
+        GameFieldTileType GetGameFieldTile(Vector2i position);
+
         void MovePlayerEntity(Keyboard.Key keyDir);
-        Vector2f GetPlayerEntityPosition();
+
+        Vector2i GetPlayerEntityPosition();
+
+        Keyboard.Key GetLastDir();
     }
 }

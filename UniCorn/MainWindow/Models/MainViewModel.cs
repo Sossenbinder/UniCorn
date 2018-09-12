@@ -20,7 +20,7 @@ namespace MainWindow.UniCorn.Models
 
         private readonly GameRunner m_gameState;
 
-        private const int m_gameFieldSize = 12;
+        private const int m_gameFieldSize = 11;
         private const int m_spriteSize = 64;
 
         public MainViewModel()
@@ -46,7 +46,7 @@ namespace MainWindow.UniCorn.Models
             metaData.WindowTitle = MainWindowMetaData.TITLE;
 
             float scalingFactor = 1;
-            float windowHeight = MainWindowMetaData.HEIGHT;
+            float windowHeight = m_gameFieldSize * m_spriteSize;
             float windowWidth = MainWindowMetaData.WIDTH;
 
             while (windowHeight > desktopMode.Height || windowWidth > desktopMode.Width)
@@ -75,9 +75,9 @@ namespace MainWindow.UniCorn.Models
             return m_spriteSize;
         }
 
-        public GameFieldTileType GetGameFieldTile(int posX, int posY)
+        public GameFieldTileType GetGameFieldTile(Vector2i position)
         {
-            return m_gameField.GetGameFieldTile(new Vector2i(posX, posY)).GetTileType();
+            return m_gameField.GetGameFieldTile(position).GetTileType();
         }
 
         public void MovePlayerEntity(Keyboard.Key keyDir)
@@ -85,9 +85,14 @@ namespace MainWindow.UniCorn.Models
             m_gameState.MovePlayerEntity(keyDir);
         }
 
-        public Vector2f GetPlayerEntityPosition()
+        public Vector2i GetPlayerEntityPosition()
         {
             return m_gameState.GetPlayerEntityPosition();
+        }
+
+        public Keyboard.Key GetLastDir()
+        {
+            return m_gameState.GetLastDir();
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using MainWindow.UniCorn.Controllers.Interfaces;
 using MainWindow.UniCorn.Models.Interfaces;
 using MainWindow.UniCorn.Views.Interfaces;
 using UniCorn.MainWindow;
 using UniCorn;
-using UniCorn.Logic;
 using UniCorn.Logic.Field;
 
 namespace MainWindow.UniCorn.Views
@@ -16,9 +16,7 @@ namespace MainWindow.UniCorn.Views
         private readonly IMainViewModel m_mainViewModel;
 
         private BombSpriteHandler m_bombSpriteHandler;
-
         private RenderWindow m_renderWindow;
-
         private Sprite m_playerEntity;
 
         public MainView(IMainViewController mainViewController, IMainViewModel mainViewModel)
@@ -64,7 +62,7 @@ namespace MainWindow.UniCorn.Views
             {
                 for(var j = 0; j < gameFieldSize; ++j)
                 {
-                    var tileType = m_mainViewModel.GetGameFieldTile(i, j);
+                    var tileType = m_mainViewModel.GetGameFieldTile(new Vector2i(i, j));
                     var sprite = m_bombSpriteHandler.GetSpritePositioned(tileType, i, j);
 
                     m_renderWindow.Draw(sprite);
@@ -74,7 +72,15 @@ namespace MainWindow.UniCorn.Views
 
         private void DrawPlayerEntity()
         {
-            m_playerEntity.Position = m_mainViewModel.GetPlayerEntityPosition();
+            var pos = m_mainViewModel.GetPlayerEntityPosition();
+
+            m_playerEntity.Position = new Vector2f(pos.X, pos.Y);
+
+            if (m_mainViewModel.GetLastDir() == Keyboard.Key.Left)
+            {
+                m_playerEntity.Scale = new Vector2f(-1, -1);
+            }
+
             m_renderWindow.Draw(m_playerEntity);
         }
     }
